@@ -1,0 +1,31 @@
+body {
+    background-color: #e0e4e0;
+}
+.carshare-header {
+    background-color: #b8e81c;
+}
+.carshare-subheader {
+    background-color: #dcf48e !important;
+}
+.carshare-indent-list {
+    list-style: none;
+    padding-left: 0.5em;
+}
+.carshare-table-hdr {
+    background-color: #dcf48e;
+}
+.carshare-table-row {
+    background-color: #ffffff;
+}
+.carshare-btn {
+    display: inline-block;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    background-color: #b8e81c;
+}
+.carshare-subheader-bad {
+    background-color: #f08a68 !important;
+}
+.carshare-bad {
+    background-color: #f0e4e0 !important;
+}
