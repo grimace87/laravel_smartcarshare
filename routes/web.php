@@ -33,9 +33,10 @@ Route::get('/badauth', 'HomeController@badAuth');
 Route::group(['middleware' => ['auth', 'App\Http\Middleware\ManagerMiddleware']], function() {
 
     // Member things
-    Route::post('/members/cancel/{id}', 'MemberController@cancel');
-    Route::post('/members/delete/{id}', 'MemberController@confirmDelete');
-    Route::delete('/members/delete/{id}', 'MemberController@deleteMember');
+    Route::post('/members/cancel/{id}/{memType}', 'MemberController@tryCancel');
+    Route::post('/members/cancel/confirmed/{id}/{memType}', 'MemberController@cancel');
+    Route::post('/members/delete/{id}/{memType}', 'MemberController@confirmDelete');
+    Route::delete('/members/delete/{id}/{memType}', 'MemberController@deleteMember');
 
     // Things with bookings
     Route::post('/bookings/delete/{id}', 'BookingController@confirmDelete');
@@ -111,13 +112,15 @@ Route::group(['middleware' => 'auth'], function() {
 
     // Member things
     Route::get('/members', 'MemberController@all');
-    Route::get('/members/show/{id}', 'MemberController@show');
+    Route::get('/members/show/{id}/{memType}', 'MemberController@show');
     Route::get('/members/approvals', 'MemberController@approvals');
     Route::get('/members/renewals', 'MemberController@renewals');
-    Route::post('/members/approve/{id}', 'MemberController@approve');
-    Route::post('/members/renew/{id}', 'MemberController@renew');
-    Route::get('/members/update/{id}', 'MemberController@updateForm');
-    Route::post('/members/update/{id}', 'MemberController@update');
+    Route::post('/members/approve/{id}/{memType}', 'MemberController@tryApprove');
+    Route::post('/members/approve/confirmed/{id}/{memType}', 'MemberController@approve');
+    Route::post('/members/renew/{id}/{memType}', 'MemberController@tryRenew');
+    Route::post('/members/renew/confirmed/{id}/{memType}', 'MemberController@renew');
+    Route::get('/members/update/{id}/{memType}', 'MemberController@updateForm');
+    Route::post('/members/update/{id}/{memType}', 'MemberController@update');
 
     // Things with bookings
     Route::get('/bookings', 'BookingController@all');

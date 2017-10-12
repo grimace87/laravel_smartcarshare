@@ -6,11 +6,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading carshare-subheader">Approval</div>
                 <div class="panel-body">
-                    Approve Member ID {{ $id }}?
+                    Approve Member ID {{ $id }} on membership type {{ $memType }}?
                 </div>
                 <div class="panel-body">
-                    <a href="{{ url('members/') }}"><button class="carshare-btn">Approve</button></a>
-					<a href="{{ url('members/show/'.$id) }}"><button class="carshare-btn">Cancel</button></a>
+                    <form method="post" action="{{ url('members/approve/confirmed/'.$id.'/'.$memType) }}">
+                        {{ csrf_field() }}
+                        <input type="submit" class="carshare-btn" value="Approve Member" />
+                        <a href="{{ url('members/show/'.$id.'/'.$memType) }}"><input type="button" class="carshare-btn" value="Cancel" /></a>
+                    </form>
                 </div>
             </div>
         </div>

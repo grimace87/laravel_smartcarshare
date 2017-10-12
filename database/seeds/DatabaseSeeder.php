@@ -12,15 +12,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::table('staff')->insert([
-            'username' => 'thomas',
-            'password' => bcrypt('thomas123'),
-            'Last_Name' => 'Reichert',
-            'First_Name' => 'Thomas',
+            'username' => 'tom1',
+            'password' => bcrypt('tom123'),
+            'Last_Name' => 'Jonas',
+            'First_Name' => 'Tom',
             'Street_Address' => '12A Zora Domain',
             'Suburb' => 'Lake Hylia',
             'Postcode' => '3003',
             'Phone_No' => '0401407582',
-            'Email_Add' => 'thomasr1987@gmail.com',
+            'Email_Add' => 'ivorcatt@mail.com',
             'Position' => 'Senior Admin',
             'Date_Birth' => '1948-12-03'
         ]);
