@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Member;
 use App\MemberMembership;
+use App\MembershipType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,19 +12,26 @@ class MemberController extends Controller
 {
 
     private $valRules = [
+
         'Last_Name' => 'required|min:2',
         'First_Name' => 'required|min:2',
-        'Street_Address' => 'required|min:10',
+        'Street_Address' => 'required|min:6',
         'Suburb' => 'required|min:3',
-        'Postcode' => 'required|min:4|max:4|numeric',
-        'Phone_No' => 'nullable|min:6|max:12|numeric',
+        'Postcode' => 'required|numeric',
+        'Phone_No' => 'nullable|numeric',
         'Email_Add' => 'required|email',
         'Licence_No' => 'required|numeric',
         'Licence_Exp' => 'required',
         'Terms_File_Loc' => 'required',
-        'Acceptance_Date' => 'required'
+        'Acceptance_Date' => 'required',
+
+        'MemType_Id' => 'required',
+        'Status' => 'required',
+        'Expiry_Date' => 'required'
+
     ];
     private $valMessages = [
+
         'Last_Name.required' => 'Please enter last name.',
         'Last_Name.min' => 'Please enter at least 2 characters for the last name.',
         'First_Name.required' => 'Please enter first name.',
@@ -32,11 +41,7 @@ class MemberController extends Controller
         'Suburb.required' => 'Please enter the suburb.',
         'Suburb.min' => 'Please enter at least 3 characters for the suburb.',
         'Postcode.required' => 'Please enter the post code.',
-        'Postcode.min' => 'Please enter exactly 4 characters for the post code.',
-        'Postcode.max' => 'Please enter exactly 4 characters for the post code.',
         'Postcode.numeric' => 'Please enter only numbers for the post code.',
-        'Phone_No.min' => 'Please enter at least 6 characters for the phone number.',
-        'Phone_No.max' => 'Please enter no more than 12 characters for the phone number.',
         'Phone_No.numeric' => 'Please enter only numbers for the phone number.',
         'Email_Add.required' => 'Please enter an email address.',
         'Email_Add.email' => 'Please enter a valid email address.',
@@ -44,7 +49,12 @@ class MemberController extends Controller
         'Licence_No.numeric' => 'Please enter only numbers for the license number.',
         'Licence_Exp.required' => 'Please enter the license expiry date.',
         'Terms_File_Loc.required' => 'Please enter file location of the terms agreement.',
-        'Acceptance_Date.required' => 'Please enter the date of acceptance of the terms.'
+        'Acceptance_Date.required' => 'Please enter the date of acceptance of the terms.',
+
+        'MemType_Id.required' => 'Please enter a valid membership type.',
+        'Status.required' => 'Please enter the membership status.',
+        'Expiry_Date.required' => 'Please enter the membership expiry date.'
+
     ];
 
     /**
@@ -142,24 +152,75 @@ class MemberController extends Controller
     // Get the form to update a member
     public function updateForm($id, $memType) {
 
+        $mem = Member::find($id);
+        $memShip = MemberMembership::where([['Membership_No', $id], ['MemType_Id', $memType]])->first();
+        $memTypes = MembershipType::all();
 
-
-
-        $mems = DB::table('member')->join('member_memberships', 'member.Membership_No', '=', 'member_memberships.Membership_No');
-        $payTheMoneys = Payment::all();
-        $staff = DB::table('staff')->get();
-
-        return view('booking.update', ['book' => $book, 'vehicles' => $vehicles, 'mems' => $mems, 'pays' => $payTheMoneys, 'staff' => $staff]);
-
-
-
-
-        return view('member.update')->with('id', $id);
+        return view('member.update', ['id' => $id, 'oldMemType' => $memType, 'mem' => $mem, 'memShip' => $memShip, 'memTypes' => $memTypes]);
     }
 
     // Update a member
-    public function update($id, $memType) {
-        return MemberController::all();
+    public function update(Request $request) {
+
+        // Validate data
+        $this->validate($request, $this->valRules, $this->valMessages);
+
+        // Check nullable fields
+        if ($request->Phone_No == '') $request->Phone_No = null;
+
+		// Member and membership records need to be saved here - the member one works fine
+        $mem = Member::find($request->Membership_No);
+        $mem->Last_Name = $request->Last_Name;
+        $mem->First_Name = $request->First_Name;
+        $mem->Street_Address = $request->Street_Address;
+        $mem->Suburb = $request->Suburb;
+        $mem->Postcode = $request->Postcode;
+        $mem->Phone_No = $request->Phone_No;
+        $mem->Email_Add = $request->Email_Add;
+        $mem->Licence_No = $request->Licence_No;
+        $mem->Licence_Exp = $request->Licence_Exp;
+        $mem->Terms_File_Loc = $request->Terms_File_Loc;
+        $mem->Acceptance_Date = $request->Acceptance_Date;
+        $mem->save();
+
+		// The membership doesn't save properly if the MemType_Id (part of the composite primary key) is modified
+		// A way around this is to save the new one as a separate record, and then delete the old copy
+		if ($request->Old_Membership_Type == $request->MemType_Id) {
+			
+			// Membership type was not changed - won't have issues here
+			$memShip = MemberMembership::where([['Membership_No', $request->Membership_No], ['MemType_Id', $request->MemType_Id]])->first();
+			$memShip->MemType_Id = $request->MemType_Id;
+			$memShip->Status = $request->Status;
+			$memShip->Expiry_Date = $request->Expiry_Date;
+			$memShip->SmartCard_Issued = $request->SmartCard_Issued == 'on' ? 1 : 0;
+			$memShip->save();
+			
+		}
+		else {
+			
+			// Must create a new record, by copying data from the form where available, otherwise from the old record
+			$oldRecord = MemberMembership::where([['Membership_No', $request->Membership_No], ['MemType_Id', $request->Old_Membership_Type]])->first();
+			$newRecord = new MemberMembership();
+			$newRecord->Membership_No = $request->Membership_No;
+			$newRecord->MemType_Id = $request->MemType_Id;
+			$newRecord->Date_Joined = $oldRecord->Date_Joined;
+			$newRecord->Last_Renewed = $oldRecord->Last_Renewed;
+			$newRecord->Expiry_Date = $request->Expiry_Date;
+			$newRecord->Status = $request->Status;
+			$newRecord->SmartCard_Issued = $request->SmartCard_Issued == 'on' ? 1 : 0;
+			$newRecord->SmartCard_No = $oldRecord->SmartCard_No;
+			
+			// Save the new record
+			if ($newRecord->save())
+			
+			// Delete the old record if the new one was successfully saved
+				$oldRecord->delete();
+			
+		}
+
+        // Return to 'View All' page
+        return redirect('/members');
+
     }
 
     // Confirm deleting a member
