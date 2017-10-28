@@ -9,7 +9,6 @@
         <tr class="carshare-table-hdr">
             <th>Registration Number</th>
             <th>Odometer (km)</th>
-            <th>Transmission</th>
             <th>Location</th>
             <th>Date of Disposal</th>
             <th></th>
@@ -18,12 +17,11 @@
         @foreach ($vehix as $v)
 
             <tr class="carshare-table-row">
-                <td>{{ $v['rego'] }}</td>
-                <td>{{ $v['odometer'] }}</td>
-                <td>{{ $v['trans'] }}</td>
-                <td>{{ $v['locID'] }}</td>
-                <td>{{ substr($v['disposalDateTime'], 0, 10) }}</td>
-                <td><form method="get" action="{{ url('vehicles/show/'.$v['rego']) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Details" /></form></td>
+                <td>{{ $v->Rego_No }}</td>
+                <td>{{ $v->Odo_Reading }}</td>
+                <td>{{ $v->Street_Address.', '.$v->Suburb }}</td>
+                <td>{{ substr($v->Date_Disposed, 0, 10) }}</td>
+                <td><form method="get" action="{{ url('vehicles/show/'.$v->Rego_No) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Details" /></form></td>
             </tr>
 
         @endforeach

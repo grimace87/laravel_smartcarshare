@@ -6,15 +6,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading carshare-subheader">Delete Vehicle</div>
 				<div class="panel-body">
-                    Are you sure you want to delete vehicle {{ $id }}?
+                    Are you sure you want to delete vehicle {{ $rego }}?
 				</div>
                 <div class="panel-body">
-                    <form action="{{ url('vehicles/delete/'.$id) }}" method="post">
+                    <form action="{{ url('vehicles/delete/'.$rego) }}" method="post">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
-                        <input type="hidden" name="id" value="{{ $id }}" />
                         <input type="submit" class="carshare-btn" value="Delete" />
-                        <a href="{{ url('vehicles/show/'.$id) }}"><input type="button" class="carshare-btn" value="Cancel" /></a>
+                        <a href="{{ url('vehicles/show/'.$rego) }}"><input type="button" class="carshare-btn" value="Cancel" /></a>
                     </form>
                 </div>
                 <div class="panel-body">

@@ -17,11 +17,11 @@
         @foreach ($locs as $l)
 
             <tr class="carshare-table-row">
-                <td>{{ $l['id'] }}</td>
-                <td>{{ $l['council'] }}</td>
-                <td>{{ $l['address'].', '.$l['suburb'].', '.$l['postCode'] }}</td>
-                <td>{{ $l['parkingLevy'] }}</td>
-                <td><form method="get" action="{{ url('locations/show/'.$l['id']) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Details" /></form></td>
+                <td>{{ $l['Location_Id'] }}</td>
+                <td>{{ $l['Council_Name'] }}</td>
+                <td>{{ $l['Street_Address'].', '.$l['Suburb'].', '.$l['Postcode'] }}</td>
+                <td>{{ $l['Parking_Levy_Amt'] }}</td>
+                <td><form method="get" action="{{ url('locations/show/'.$l['Location_Id']) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Details" /></form></td>
             </tr>
 
         @endforeach

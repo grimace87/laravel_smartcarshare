@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
-
+	// Validation rules, used for the 'new' and 'update' use cases
 	private $valRules = [
 		'Start_Date' => 'required',
 		'Start_Time' => 'required',
@@ -95,7 +95,7 @@ class BookingController extends Controller
         $book->Booking_Notes = $request->Booking_Notes;
         $book->Payment_No = $request->Payment_No;
 
-        // DEFAULT _ REPLACE WITH LOGGED-IN STAFF MEMBER
+        // Store staff member's ID
         $book->Staff_No = Auth::user()->Staff_No;
 
         // Save and return to 'View All' page
@@ -106,9 +106,11 @@ class BookingController extends Controller
 
     // Get the form to update a booking
     public function updateForm($id) {
-
+		
+		// Get This
         $book = Booking::find($id);
 
+		// Get data for combo boxes
         $vehicles = DB::table('vehicles')->join('vehicle_types', 'vehicles.Type_Id', '=', 'vehicle_types.Type_Id')->get();
         $mems = Member::all();
         $payTheMoneys = Payment::all();

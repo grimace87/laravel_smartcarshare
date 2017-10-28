@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,8 +13,22 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::table('staff')->insert([
+            'username' => 'tom0',
+            'password' => Hash::make('tom012'),
+            'Last_Name' => 'Perchetta',
+            'First_Name' => 'Tomina',
+            'Street_Address' => '13 Nils St',
+            'Suburb' => 'Nils',
+            'Postcode' => '3102',
+            'Phone_No' => '0412789789',
+            'Email_Add' => 'miniperchiti@nilsmail.net',
+            'Position' => 'Staff',
+            'Date_Birth' => '1968-06-21'
+        ]);
+		
+		DB::table('staff')->insert([
             'username' => 'tom1',
-            'password' => bcrypt('tom123'),
+            'password' => Hash::make('tom123'),
             'Last_Name' => 'Jonas',
             'First_Name' => 'Tom',
             'Street_Address' => '12A Zora Domain',
@@ -24,5 +39,20 @@ class DatabaseSeeder extends Seeder
             'Position' => 'Senior Admin',
             'Date_Birth' => '1948-12-03'
         ]);
+		
+		DB::table('staff')->insert([
+            'username' => 'tom2',
+            'password' => Hash::make('tom234'),
+            'Last_Name' => 'Pietersen',
+            'First_Name' => 'Tomagener',
+            'Street_Address' => '14 Peters Ln',
+            'Suburb' => 'Poiter',
+            'Postcode' => '3202',
+            'Phone_No' => '0456234234',
+            'Email_Add' => 'tomagener@nilsmail.net',
+            'Position' => 'Manager',
+            'Date_Birth' => '1992-07-20'
+        ]);
+		
     }
 }

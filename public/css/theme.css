@@ -2,7 +2,9 @@ body {
     background-color: #e0e4e0;
 }
 .carshare-header {
-    background-color: #b8e81c;
+    /*background-color: #b8e81c;*/
+	background-image: url("../images/bg_header.png");
+	background-repeat: repeat-x;
 }
 .carshare-subheader {
     background-color: #dcf48e !important;

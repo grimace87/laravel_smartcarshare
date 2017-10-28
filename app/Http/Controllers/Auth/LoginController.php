@@ -37,7 +37,8 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    // This possibly overrides something (like using email addresses for login)
+    // Defining a 'username' method overrides the default behaviour of using an 'email' field to authenticate users.
+	// The user Model class is defined in the 'config/auth.php' file.
     public function username() {
         return 'username';
     }

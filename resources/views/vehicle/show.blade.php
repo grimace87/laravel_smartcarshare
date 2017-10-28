@@ -9,11 +9,10 @@
 
         <tr class="carshare-table-hdr">
             <th>Registration Number</th>
-            <th>Vehicle Type</th>
             <th>VIN</th>
-            <th>Class</th>
+            <th>Model</th>
+            <th>Colour</th>
             <th>Odometer (km)</th>
-            <th>Transmission</th>
             <th>Year</th>
             <th>Location</th>
             <th>Date of Acquisition</th>
@@ -22,25 +21,24 @@
         </tr>
 
 		<tr class="carshare-table-row">
-			<td>{{ $vehix['rego'] }}</td>
-			<td>{{ $vehix['typeID'] }}</td>
-			<td>{{ $vehix['VIN'] }}</td>
-			<td>{{ $vehix['class'] }}</td>
-			<td>{{ $vehix['odometer'] }}</td>
-			<td>{{ $vehix['trans'] }}</td>
-			<td>{{ $vehix['year'] }}</td>
-			<td>{{ $vehix['locID'] }}</td>
-			<td>{{ substr($vehix['acquiredDateTime'], 0, 10) }}</td>
-			<td>{{ substr($vehix['disposalDateTime'], 0, 10) }}</td>
-			<td>{{ $vehix['staffNo'] }}</td>
+			<td>{{ $vehix->Rego_No }}</td>
+			<td>{{ $vehix->VIN_No }}</td>
+			<td>{{ $vehix->Make.' '.$vehix->Model }}</td>
+			<td>{{ $vehix->Colour }}</td>
+			<td>{{ $vehix->Odo_Reading }}</td>
+			<td>{{ $vehix->Year }}</td>
+			<td>{{ $vehix->Street_Address }}</td>
+			<td>{{ substr($vehix->Date_Acquired, 0, 10) }}</td>
+			<td>{{ substr($vehix->Date_Disposed, 0, 10) }}</td>
+			<td>{{ $vehix->Staff_No }}</td>
 		</tr>
 
     </table>
 	
 	<ul class="list-inline">
-		<li><form method="get" action="{{ url('vehicles/update/'.$vehix['rego']) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Update" /></form></li>
-		<li><form method="get" action="{{ url('vehicles/retire/'.$vehix['rego']) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Retire" /></form></li>
-		<li><form method="post" action="{{ url('vehicles/delete/'.$vehix['rego']) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Delete" /></form></li>
+		<li><form method="get" action="{{ url('vehicles/update/'.$vehix->Rego_No) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Update" /></form></li>
+		<li><form method="get" action="{{ url('vehicles/retire/'.$vehix->Rego_No) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Retire" /></form></li>
+		<li><form method="post" action="{{ url('vehicles/delete/'.$vehix->Rego_No) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Delete" /></form></li>
 	</ul>
 	
 @endsection

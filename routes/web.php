@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth', 'App\Http\Middleware\ManagerMiddleware']]
     Route::get('/locations/new', 'LocationController@newForm');
     Route::post('/locations/new', 'LocationController@news');
     Route::get('/locations/update/{id}', 'LocationController@updateForm');
-    Route::post('/locations/update/{id}', 'LocationController@update');
+    Route::post('/locations/update', 'LocationController@update');
     Route::post('/locations/delete/{id}', 'LocationController@confirmDelete');
     Route::delete('/locations/delete/{id}', 'LocationController@deleteLocation');
 
@@ -134,7 +134,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/vehicles', 'VehicleController@all');
     Route::get('/vehicles/show/{id}', 'VehicleController@show');
     Route::get('/vehicles/update/{id}', 'VehicleController@updateForm');
-    Route::post('/vehicles/update/{id}', 'VehicleController@update');
+    Route::post('/vehicles/update', 'VehicleController@update');
 
     // Things with locations
     Route::get('/locations', 'LocationController@all');

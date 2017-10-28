@@ -50,6 +50,7 @@
                     <form action="{{ url('members/update/'.$id.'/'.$oldMemType) }}" method="post">
 
                         {{ csrf_field() }}
+						
                         <input type="hidden" class="form-control" name="Membership_No" value="{{ $id }}" />
                         <input type="hidden" class="form-control" name="Old_Membership_Type" value="{{ $oldMemType }}" />
 
