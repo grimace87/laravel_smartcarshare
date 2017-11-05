@@ -87,6 +87,8 @@
                     <ul class="carshare-indent-list">
                         <li><a href="{{ url('/archive/members') }}">Archive Members</a></li>
                         <li><a href="{{ url('/archive/bookings') }}">Archive Bookings</a></li>
+                        <li><a href="{{ url('/archive/showmembers') }}">Show Member Archive</a></li>
+                        <li><a href="{{ url('/archive/showbookings') }}">Show Booking Archive</a></li>
                     </ul>
                 </div>
             </div>

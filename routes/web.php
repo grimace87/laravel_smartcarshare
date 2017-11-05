@@ -64,9 +64,13 @@ Route::group(['middleware' => ['auth', 'App\Http\Middleware\ManagerMiddleware']]
 
     // Archiving
     Route::get('/archive/members', 'ArchiveController@allMembers');
+    Route::get('/archive/members/filter/{filter}', 'ArchiveController@allMembersFilter');
     Route::post('/archive/members', 'ArchiveController@archiveMembers');
     Route::get('/archive/bookings', 'ArchiveController@allBookings');
+    Route::get('/archive/bookings/filter/{filter}', 'ArchiveController@allBookingsFilter');
     Route::post('/archive/bookings', 'ArchiveController@archiveBookings');
+    Route::get('/archive/showmembers', 'ArchiveController@showMemberArchive');
+    Route::get('/archive/showbookings', 'ArchiveController@showBookingArchive');
 
 });
 
@@ -112,6 +116,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     // Member things
     Route::get('/members', 'MemberController@all');
+    Route::get('/members/filter/{filter}', 'MemberController@allFilter');
     Route::get('/members/show/{id}/{memType}', 'MemberController@show');
     Route::get('/members/approvals', 'MemberController@approvals');
     Route::get('/members/renewals', 'MemberController@renewals');
@@ -124,6 +129,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     // Things with bookings
     Route::get('/bookings', 'BookingController@all');
+    Route::get('/bookings/filter/{filter}', 'BookingController@allFilter');
     Route::get('/bookings/show/{id}', 'BookingController@show');
     Route::get('/bookings/new', 'BookingController@newForm');
     Route::post('/bookings/new', 'BookingController@news');
@@ -132,16 +138,19 @@ Route::group(['middleware' => 'auth'], function() {
 
     // Things with vehicles
     Route::get('/vehicles', 'VehicleController@all');
+    Route::get('/vehicles/filter/{filter}', 'VehicleController@allFilter');
     Route::get('/vehicles/show/{id}', 'VehicleController@show');
     Route::get('/vehicles/update/{id}', 'VehicleController@updateForm');
     Route::post('/vehicles/update', 'VehicleController@update');
 
     // Things with locations
     Route::get('/locations', 'LocationController@all');
+    Route::get('/locations/filter/{filter}', 'LocationController@allFilter');
     Route::get('/locations/show/{id}', 'LocationController@show');
 
     // Things with staff
     Route::get('/staff', 'StaffController@all');
+    Route::get('/staff/filter/{filter}', 'StaffController@allFilter');
     Route::get('/staff/show/{id}', 'StaffController@show');
     Route::get('/staff/new', 'StaffController@newForm');
     Route::post('/staff/new', 'StaffController@news');

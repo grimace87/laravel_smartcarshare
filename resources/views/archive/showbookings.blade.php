@@ -7,10 +7,10 @@
     <table class="table">
 
         <tr class="carshare-table-hdr">
-            <th>Booking Date &nbsp; &nbsp; <a href="{{ url('archive/bookings/filter/1') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('archive/bookings/filter/2') }}">ᐯ</a></th>
+            <th>Booking Date</th>
             <th>Start Date</th>
             <th>Start Odometer</th>
-            <th>Return Date &nbsp; &nbsp; <a href="{{ url('archive/bookings/filter/3') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('archive/bookings/filter/4') }}">ᐯ</a></th>
+            <th>Return Date</th>
             <th>Return Odometer</th>
             <th>Payment Amount</th>
             <th>Card Name</th>
@@ -47,33 +47,7 @@
         @endforeach
 
     </table>
-	
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
-				<div class="panel panel-default">
-					<div class="panel-heading carshare-subheader">Selection for Archive</div>
-					<div class="panel-body">
-						
-						<p>This operation cannot be reversed.</p>
-						
-						<form method="post" action="{{ url('archive/bookings') }}">
-							{{ csrf_field() }}
-							
-							<label for="">Archive Filter</label>
-							<select id="Selection_Mode" name="Selection_Mode">
-								<option value="MoreThan30" selected>Bookings Completed More Than 30 Days Ago</option>
-								<option value="AllCompleted">All Completed Bookings</option>
-							</select>
-							<br>
-							<input type="submit" class="carshare-btn" value="Archive Bookings" />
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
+
 @else
 
     <div class="container">
@@ -85,5 +59,21 @@
     </div>
 
 @endif
+	
+@isset($errs)
+
+	<div class="container">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-default">
+				<div class="panel-heading carshare-subheader-bad">Payments were mis-allocated</div>
+				<div class="panel-body carshare-bad">
+					<p>{{ $errs }} bookings used payments that were attached to other bookings as well.</p>
+					<p>Those bookings were archived, but payment records may still be listed.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+@endisset
 
 @endsection

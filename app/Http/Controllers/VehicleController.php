@@ -50,6 +50,30 @@ class VehicleController extends Controller
 		
     }
 
+    // Get all vehicles (filtered)
+    public function allFilter($filter) {
+		
+		switch($filter) {
+			case 1:
+				$vehix = DB::table('vehicles')->join('locations', 'vehicles.Location_Id', '=', 'locations.Location_Id')->orderBy('Rego_No','asc')->get();
+				break;
+			case 2:
+				$vehix = DB::table('vehicles')->join('locations', 'vehicles.Location_Id', '=', 'locations.Location_Id')->orderBy('Rego_No','desc')->get();
+				break;
+			case 3:
+				$vehix = DB::table('vehicles')->join('locations', 'vehicles.Location_Id', '=', 'locations.Location_Id')->orderBy('Odo_Reading','asc')->get();
+				break;
+			case 4:
+				$vehix = DB::table('vehicles')->join('locations', 'vehicles.Location_Id', '=', 'locations.Location_Id')->orderBy('Odo_Reading','desc')->get();
+				break;
+			default:
+				$vehix = DB::table('vehicles')->join('locations', 'vehicles.Location_Id', '=', 'locations.Location_Id')->get();
+				break;
+		}
+        return view('vehicle.all', ['vehix' => $vehix, 'def' => 'No vehicles to display.']);
+		
+    }
+
 	// Show one vehicle with all details
 	public function show($rego) {
         

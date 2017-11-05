@@ -55,6 +55,34 @@ class BookingController extends Controller
 
     }
 
+    // Get all bookings (filtered)
+    public function allFilter($filter) {
+		switch($filter) {
+			case 1:
+				$books = DB::table('bookings')->orderBy('Booking_No','asc')->get();
+				break;
+			case 2:
+				$books = DB::table('bookings')->orderBy('Booking_No','desc')->get();
+				break;
+			case 3:
+				$books = DB::table('bookings')->orderBy('Rego_No','asc')->get();
+				break;
+			case 4:
+				$books = DB::table('bookings')->orderBy('Rego_No','desc')->get();
+				break;
+			case 5:
+				$books = DB::table('bookings')->orderBy('Membership_No','asc')->get();
+				break;
+			case 6:
+				$books = DB::table('bookings')->orderBy('Membership_No','desc')->get();
+				break;
+			default:
+				$books = Booking::all();
+				break;
+		}
+        return view('booking.all', ['books' => $books, 'def' => 'No bookings to display.']);
+    }
+
 	// Show one booking with all details
 	public function show($id) {
 

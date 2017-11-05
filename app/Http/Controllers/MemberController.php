@@ -74,6 +74,44 @@ class MemberController extends Controller
         return view('member.all', ['mems' => $mems, 'def' => 'No members to display.']);
     }
 
+    // Get all members and memberships (filtered)
+    public function allFilter($filter) {
+		switch($filter) {
+			case 1:
+				$mems = DB::table('members')->join('member_memberships', 'members.Membership_No', '=', 'member_memberships.Membership_No')
+					->join('membership_types', 'member_memberships.MemType_Id', '=', 'membership_types.MemType_Id')->orderBy('members.Membership_No','asc')->get();
+				break;
+			case 2:
+				$mems = DB::table('members')->join('member_memberships', 'members.Membership_No', '=', 'member_memberships.Membership_No')
+					->join('membership_types', 'member_memberships.MemType_Id', '=', 'membership_types.MemType_Id')->orderBy('members.Membership_No','desc')->get();
+				break;
+			case 3:
+				$mems = DB::table('members')->join('member_memberships', 'members.Membership_No', '=', 'member_memberships.Membership_No')
+					->join('membership_types', 'member_memberships.MemType_Id', '=', 'membership_types.MemType_Id')->orderBy('Status','asc')->get();
+				break;
+			case 4:
+				$mems = DB::table('members')->join('member_memberships', 'members.Membership_No', '=', 'member_memberships.Membership_No')
+					->join('membership_types', 'member_memberships.MemType_Id', '=', 'membership_types.MemType_Id')->orderBy('Status','desc')->get();
+				break;
+			case 5:
+				$mems = DB::table('members')->join('member_memberships', 'members.Membership_No', '=', 'member_memberships.Membership_No')
+					->join('membership_types', 'member_memberships.MemType_Id', '=', 'membership_types.MemType_Id')->orderBy('Last_Name','asc')->get();
+				break;
+			case 6:
+				$mems = DB::table('members')
+					->join('member_memberships', 'members.Membership_No', '=', 'member_memberships.Membership_No')
+					->join('membership_types', 'member_memberships.MemType_Id', '=', 'membership_types.MemType_Id')->orderBy('Last_Name','desc')->get();
+				break;
+			default:
+				$mems = DB::table('members')
+					->join('member_memberships', 'members.Membership_No', '=', 'member_memberships.Membership_No')
+					->join('membership_types', 'member_memberships.MemType_Id', '=', 'membership_types.MemType_Id')
+					->get();
+				break;
+		}
+        return view('member.all', ['mems' => $mems, 'def' => 'No members to display.']);
+    }
+
 	// Show one membership
 	public function show($id, $memType) {
         $mem = DB::table('members')

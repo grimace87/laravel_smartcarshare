@@ -2,10 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class StaffController extends Controller
 {
+	// Validation rules, used for the 'new' and 'update' use cases
+	private $valRules = [
+		'Last_Name' => 'required|min:2',
+		'First_Name' => 'required|min:2',
+		'Street_Address' => 'required',
+		'Suburb' => 'required',
+		'Postcode' => 'required|numeric',
+		'Phone_No' => 'nullable|numeric',
+		'Email_Add' => 'required|email',
+		'Position' => 'required',
+		'Date_Birth' => 'required',
+		'username' => 'required|min:4'
+	];
+	private $valMessages = [
+		'Last_Name.required' => 'Please enter a surname.',
+		'Last_Name.min' => 'Surname must be at least 2 characters',
+		'First_Name.required' => 'Please enter a first name.',
+		'First_Name.min' => 'First name must be at least 2 characters.',
+		'Street_Address.required' => 'Please enter a street address.',
+		'Suburb.required' => 'Please enter a suburb.',
+		'Postcode.required' => 'Please enter a postcode.',
+		'Postcode.numeric' => 'The postcode must be numeric.',
+		'Phone_No.numeric' => 'The phone number must be numeric, or left blank.',
+		'Email_Add.required' => 'Please enter an email address.',
+		'Email_Add.email' => 'The email address does not appear valid.',
+		'Position.required' => 'Please select a position.',
+		'Date_Birth.required' => 'Please enter a date of birth.',
+		'username.required' => 'Please enter a user name.',
+		'username.min' => 'The user name must be at least 4 characters.'
+	];
 
 	/**
 	 * Create a new controller instance with the appropriate middleware.
@@ -17,49 +50,93 @@ class StaffController extends Controller
 
     // Get all staff
     public function all() {
-        return view('staff.all', ['staff' => [
-            ['staffNo' => '1001', 'lastName' => 'Wilson', 'firstName' => 'Ian',
-				'address' => "123 Alan's Schenk", 'suburb' => 'Lake Hylia', 'postCode' => '3003',
-				'phone' => '0400123123', 'email' => 'alan@schenk.edu.au', 'position' => 'Manager',
-				'dob' => '1992-01-01'],
-            ['staffNo' => '1002', 'lastName' => 'Pearce', 'firstName' => 'Ebony',
-				'address' => '47 Woodhouse Gve', 'suburb' => 'Ikana Canyon', 'postCode' => '3004',
-				'phone' => '0400456456', 'email' => 'darkwood@yahoo.com', 'position' => 'Manager',
-				'dob' => '1994-03-12'],
-            ['staffNo' => '1003', 'lastName' => 'Duffield', 'firstName' => 'Christine',
-				'address' => '8 Santa Rd', 'suburb' => 'Lake Hylia', 'postCode' => '3003',
-				'phone' => '0400789789', 'email' => 'cartoonbeer@gmail.com', 'position' => 'Senior Admin',
-				'dob' => '1987-05-16'],
-            ['staffNo' => '1004', 'lastName' => 'Johncock', 'firstName' => 'Billy',
-				'address' => '9 Mikey Way', 'suburb' => 'Ikana Canyon', 'postCode' => '3004',
-				'phone' => '0400121212', 'email' => 'bass@chemical.com', 'position' => 'Admin',
-				'dob' => '1985-04-04'],
-            ['staffNo' => '1005', 'lastName' => 'Houston', 'firstName' => 'Amanda',
-				'address' => '5 Gerard Way', 'suburb' => 'Snowhead', 'postCode' => '3005',
-				'phone' => '0400131313', 'email' => 'sing@chemical.com', 'position' => 'Admin',
-				'dob' => '1986-05-05'],
-        ], 'def' => 'No staff to display.']);
+        
+        $staff = Staff::all();
+        return view('staff.all', ['staff' => $staff, 'def' => 'No staff to display.']);
+
     }
 
-	// Show one vehicle with all details
-	public function show() {
-        return view('staff.show', ['staff' => 
-            ['staffNo' => '1001', 'lastName' => 'Wilson', 'firstName' => 'Ian',
-				'address' => "123 Alan's Schenk", 'suburb' => 'Lake Hylia', 'postCode' => '3003',
-				'phone' => '0400123123', 'email' => 'alan@schenk.edu.au', 'position' => 'Manager',
-				'dob' => '1992-01-01']
-        ]);
+    // Get all staff (filtered)
+    public function allFilter($filter) {
+        
+		switch($filter) {
+			case 1:
+				$staff = DB::table('staff')->orderBy('Staff_No','asc')->get();
+				break;
+			case 2:
+				$staff = DB::table('staff')->orderBy('Staff_No','desc')->get();
+				break;
+			case 3:
+				$staff = DB::table('staff')->orderBy('Last_Name','asc')->get();
+				break;
+			case 4:
+				$staff = DB::table('staff')->orderBy('Last_Name','desc')->get();
+				break;
+			case 5:
+				$staff = DB::table('staff')->orderBy('Position','asc')->get();
+				break;
+			case 6:
+				$staff = DB::table('staff')->orderBy('Position','desc')->get();
+				break;
+			default:
+				$staff = Staff::all();
+				break;
+		}
+        return view('staff.all', ['staff' => $staff, 'def' => 'No staff to display.']);
+		
+    }
+
+	// Show one staff member with all details
+	public function show($id) {
+        
+		$user = Auth::user();
+		if ($id != $user->Staff_No && $user->Position != "Manager" && $user->Position != "Senior Admin")
+			return view('auth.bad');
+		
+        $staff = Staff::find($id);
+        return view('staff.show', ['staff' => $staff]);
+
     }
 	
     // Get the form to update a staff
     public function updateForm($id) {
-        return view('staff.update')->with('id', $id);
+        
+		// Get This
+        $staff = Staff::find($id);
+
+        return view('staff.update', ['staff' => $staff]);
+
     }
 
     // Update a staff
-    public function update($id) {
+    public function update(Request $request) {
 		
-        return StaffController::all();
+        // Validate data
+        $this->validate($request, $this->valRules, $this->valMessages);
+
+        // Find the Model
+        $staff = Staff::find($request->Staff_No);
+
+        // Check nullable 'Phone_No' fields
+        $phoneNo = $request->Phone_No;
+        if ($phoneNo == '') $phoneNo = null;
+
+        $staff->Last_Name = $request->Last_Name;
+        $staff->First_Name = $request->First_Name;
+        $staff->Street_Address = $request->Street_Address;
+        $staff->Suburb = $request->Suburb;
+        $staff->Postcode = $request->Postcode;
+        $staff->Phone_No = $phoneNo;
+        $staff->Email_Add = $request->Email_Add;
+        $staff->Position = $request->Position;
+        $staff->Date_Birth = $request->Date_Birth;
+        $staff->username = $request->username;
+        $staff->Staff_No = $request->Staff_No;
+
+        // Save and return to 'View All' page
+        $staff->save();
+        return redirect('/staff');
+
     }
 
 }

@@ -7,8 +7,8 @@
     <table class="table">
 
         <tr class="carshare-table-hdr">
-            <th>Registration Number</th>
-            <th>Odometer (km)</th>
+            <th>Registration Number &nbsp; &nbsp; <a href="{{ url('vehicles/filter/1') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('vehicles/filter/2') }}">ᐯ</a></th>
+            <th>Odometer (km) &nbsp; &nbsp; <a href="{{ url('vehicles/filter/3') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('vehicles/filter/4') }}">ᐯ</a></th>
             <th>Location</th>
             <th>Date of Disposal</th>
             <th></th>

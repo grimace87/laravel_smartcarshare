@@ -7,10 +7,10 @@
     <table class="table">
 
         <tr class="carshare-table-hdr">
-            <th>Member ID</th>
+            <th>Member ID &nbsp; &nbsp; <a href="{{ url('members/filter/1') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('members/filter/2') }}">ᐯ</a></th>
             <th>Membership Type</th>
-            <th>Membership Status</th>
-            <th>Name</th>
+            <th>Membership Status &nbsp; &nbsp; <a href="{{ url('members/filter/3') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('members/filter/4') }}">ᐯ</a></th>
+            <th>Name &nbsp; &nbsp; <a href="{{ url('members/filter/5') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('members/filter/6') }}">ᐯ</a></th>
             <th>Phone No.</th>
             <th>Email Address</th>
             <th>License Expiry Date</th>

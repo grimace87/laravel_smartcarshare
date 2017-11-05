@@ -51,7 +51,31 @@ class LocationController extends Controller
 		
     }
 
-	// Show one vehicle with all details
+    // Get all locations (filtered)
+    public function allFilter($filter) {
+        
+		switch($filter) {
+			case 1:
+				$locs = DB::table('locations')->orderBy('Location_Id','asc')->get();
+				break;
+			case 2:
+				$locs = DB::table('locations')->orderBy('Location_Id','desc')->get();
+				break;
+			case 3:
+				$locs = DB::table('locations')->orderBy('Council_Name','asc')->get();
+				break;
+			case 4:
+				$locs = DB::table('locations')->orderBy('Council_Name','desc')->get();
+				break;
+			default:
+				$locs = Location::all();
+				break;
+		}
+        return view('location.all', ['locs' => $locs, 'def' => 'No locations to display.']);
+		
+    }
+
+	// Show one location with all details
 	public function show($id) {
         
         $loc = Location::find($id);
