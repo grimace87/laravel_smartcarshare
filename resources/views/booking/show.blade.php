@@ -16,6 +16,7 @@
             <th>Start Time</th>
             <th>Finish Date</th>
             <th>Finish Time</th>
+            <th>Start Odometer</th>
             <th>Fuel Fee</th>
             <th>Insurance Fee</th>
             <th>Total (GST excl.)</th>
@@ -23,8 +24,6 @@
             <th>Notes</th>
             <th>Payment ID</th>
             <th>Staff Member</th>
-            <th></th>
-            <th></th>
         </tr>
 
 		<tr class="carshare-table-row">
@@ -36,6 +35,7 @@
 			<td>{{ substr($book['Start_Date'], 11, 8) }}</td>
 			<td>{{ substr($book['Return_Date'], 0, 10) }}</td>
 			<td>{{ substr($book['Return_Date'], 11, 8) }}</td>
+			<td>{{ $book['Start_Klm'].'km' }}</td>
 			<td>{{ $book['Fuel_Fee'] }}</td>
 			<td>{{ $book['Insurance_Fee'] }}</td>
 			<td>{{ $book['Total_exGST'] }}</td>
