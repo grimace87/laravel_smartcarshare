@@ -31,7 +31,7 @@
 						
 						<div class="form-group">
                             <label for="txtRego">Registration Number</label>
-                            <input type="text" class="form-control" id="txtRego" name="Rego_No" value="{{ old('Rego_No') }}" />
+                            <input type="text" class="form-control" id="txtRego" name="Rego_No" value="{{ old('Rego_No') }}" placeholder="Enter a unique registration number" />
                         </div>
 						<div class="form-group">
                             <label for="txtType">Vehicle Type</label>
@@ -47,15 +47,15 @@
                         </div>
 						<div class="form-group">
                             <label for="txtVIN">VIN</label>
-                            <input type="text" class="form-control" id="txtVIN" name="VIN_No" value="{{ old('VIN_No') }}" />
+                            <input type="text" class="form-control" id="txtVIN" name="VIN_No" value="{{ old('VIN_No') }}" placeholder="Enter the 17-digit identification number" />
                         </div>
 						<div class="form-group">
                             <label for="txtOdo">Odometer (km)</label>
-                            <input type="text" class="form-control" id="txtOdo" name="Odo_Reading" value="{{ old('Odo_Reading') }}" />
+                            <input type="text" class="form-control" id="txtOdo" name="Odo_Reading" value="{{ old('Odo_Reading') }}" placeholder="Enter the current odometer reading" />
                         </div>
 						<div class="form-group">
                             <label for="txtYear">Year</label>
-                            <input type="text" class="form-control" id="txtYear" name="Year" value="{{ old('Year') }}" />
+                            <input type="text" class="form-control" id="txtYear" name="Year" value="{{ old('Year') }}" placeholder="Enter the year of manufacture" />
                         </div>
 						<div class="form-group">
                             <label for="txtLoc">Location</label>

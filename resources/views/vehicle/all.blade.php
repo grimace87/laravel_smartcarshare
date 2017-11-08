@@ -8,6 +8,7 @@
 
         <tr class="carshare-table-hdr">
             <th>Registration Number &nbsp; &nbsp; <a href="{{ url('vehicles/filter/1') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('vehicles/filter/2') }}">ᐯ</a></th>
+			<th>Model</th>
             <th>Odometer (km) &nbsp; &nbsp; <a href="{{ url('vehicles/filter/3') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('vehicles/filter/4') }}">ᐯ</a></th>
             <th>Location</th>
             <th>Date of Disposal</th>
@@ -18,6 +19,7 @@
 
             <tr class="carshare-table-row">
                 <td>{{ $v->Rego_No }}</td>
+				<td>{{ $v->Make.' '.$v->Model }}</td>
                 <td>{{ $v->Odo_Reading }}</td>
                 <td>{{ $v->Street_Address.', '.$v->Suburb }}</td>
                 <td>{{ substr($v->Date_Disposed, 0, 10) }}</td>

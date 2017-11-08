@@ -46,31 +46,31 @@
                         
 						<div class="form-group">
                             <label for="txtLast">Surname</label>
-                            <input type="text" class="form-control" id="txtLast" name="Last_Name" value="{{ $staff->Last_Name }}" />
+                            <input type="text" class="form-control" id="txtLast" name="Last_Name" value="{{ $staff->Last_Name }}" placeholder="Enter surname" />
                         </div>
 						<div class="form-group">
                             <label for="txtFirst">First Name</label>
-                            <input type="text" class="form-control" id="txtFirst" name="First_Name" value="{{ $staff->First_Name }}" />
+                            <input type="text" class="form-control" id="txtFirst" name="First_Name" value="{{ $staff->First_Name }}" placeholder="Enter given name" />
                         </div>
 						<div class="form-group">
                             <label for="txtAddress">Street Address</label>
-                            <input type="text" class="form-control" id="txtAddress" name="Street_Address" value="{{ $staff->Street_Address }}" />
+                            <input type="text" class="form-control" id="txtAddress" name="Street_Address" value="{{ $staff->Street_Address }}" placeholder="Enter house number and street" />
                         </div>
 						<div class="form-group">
                             <label for="txtSuburb">Suburb</label>
-                            <input type="text" class="form-control" id="txtSuburb" name="Suburb" value="{{ $staff->Suburb }}" />
+                            <input type="text" class="form-control" id="txtSuburb" name="Suburb" value="{{ $staff->Suburb }}" placeholder="Enter suburb" />
                         </div>
 						<div class="form-group">
                             <label for="txtPostcode">Postcode</label>
-                            <input type="text" class="form-control" id="txtPostcode" name="Postcode" value="{{ $staff->Postcode }}" />
+                            <input type="text" class="form-control" id="txtPostcode" name="Postcode" value="{{ $staff->Postcode }}" placeholder="Enter post code" />
                         </div>
 						<div class="form-group">
                             <label for="txtPhone">Phone Number</label>
-                            <input type="text" class="form-control" id="txtPhone" name="Phone_No" value="{{ $staff->Phone_No }}" />
+                            <input type="text" class="form-control" id="txtPhone" name="Phone_No" value="{{ $staff->Phone_No }}" placeholder="Enter phone number" />
                         </div>
 						<div class="form-group">
                             <label for="txtEmail">Email Address</label>
-                            <input type="text" class="form-control" id="txtEmail" name="Email_Add" value="{{ $staff->Email_Add }}" />
+                            <input type="text" class="form-control" id="txtEmail" name="Email_Add" value="{{ $staff->Email_Add }}" placeholder="Enter a valid email address" />
                         </div>
 						<div class="form-group">
                             <label for="txtBirthDate">Date of Birth</label>
@@ -119,7 +119,7 @@
 						
 						<div class="form-group">
                             <label for="txtUser">Username</label>
-                            <input type="text" class="form-control" id="txtUser" name="username" value="{{ $staff->username }}" />
+                            <input type="text" class="form-control" id="txtUser" name="username" value="{{ $staff->username }}" placeholder="Enter at least 4 characters" />
                         </div>
 						
                         <input class="carshare-btn" type="submit" value="Update Staff" />

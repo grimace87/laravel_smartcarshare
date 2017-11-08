@@ -157,4 +157,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/staff/update/{id}', 'StaffController@updateForm');
     Route::post('/staff/update/{id}', 'StaffController@update');
 
+	// Things with help
+    Route::get('/help', 'HelpController@help');
+	
 });

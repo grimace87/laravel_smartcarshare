@@ -56,35 +56,35 @@
 
                         <div class="form-group">
                             <label for="First_Name">First Name</label>
-                            <input type="text" class="form-control" id="First_Name" name="First_Name" value="{{ $mem->First_Name }}" />
+                            <input type="text" class="form-control" id="First_Name" name="First_Name" value="{{ $mem->First_Name }}" placeholder="Enter a given name" />
                         </div>
                         <div class="form-group">
                             <label for="Last_Name">Surname</label>
-                            <input type="text" class="form-control" id="Last_Name" name="Last_Name" value="{{ $mem->Last_Name }}" />
+                            <input type="text" class="form-control" id="Last_Name" name="Last_Name" value="{{ $mem->Last_Name }}" placeholder="Enter a surname" />
                         </div>
                         <div class="form-group">
                             <label for="Street_Address">Street Address</label>
-                            <input type="text" class="form-control" id="Street_Address" name="Street_Address" value="{{ $mem->Street_Address }}" />
+                            <input type="text" class="form-control" id="Street_Address" name="Street_Address" value="{{ $mem->Street_Address }}" placeholder="Enter a house number and street" />
                         </div>
                         <div class="form-group">
                             <label for="Suburb">Suburb</label>
-                            <input type="text" class="form-control" id="Suburb" name="Suburb" value="{{ $mem->Suburb }}" />
+                            <input type="text" class="form-control" id="Suburb" name="Suburb" value="{{ $mem->Suburb }}" placeholder="Enter a suburb" />
                         </div>
                         <div class="form-group">
                             <label for="Postcode">Post Code</label>
-                            <input type="text" class="form-control" id="Postcode" name="Postcode" value="{{ $mem->Postcode }}" />
+                            <input type="text" class="form-control" id="Postcode" name="Postcode" value="{{ $mem->Postcode }}" placeholder="Enter a post code" />
                         </div>
                         <div class="form-group">
                             <label for="Phone_No">Phone No. (optional)</label>
-                            <input type="text" class="form-control" id="Phone_No" name="Phone_No" value="{{ $mem->Phone_No }}" />
+                            <input type="text" class="form-control" id="Phone_No" name="Phone_No" value="{{ $mem->Phone_No }}" placeholder="Enter a contact number, or leave blank" />
                         </div>
                         <div class="form-group">
                             <label for="Email_Add">Email Address</label>
-                            <input type="text" class="form-control" id="Email_Add" name="Email_Add" value="{{ $mem->Email_Add }}" />
+                            <input type="text" class="form-control" id="Email_Add" name="Email_Add" value="{{ $mem->Email_Add }}" placeholder="Type a valid email address" />
                         </div>
                         <div class="form-group">
                             <label for="Licence_No">License No.</label>
-                            <input type="text" class="form-control" id="Licence_No" name="Licence_No" value="{{ $mem->Licence_No }}" />
+                            <input type="text" class="form-control" id="Licence_No" name="Licence_No" value="{{ $mem->Licence_No }}" placeholder="Type the current license number" />
                         </div>
                         <div class="form-group">
                             <label for="pickDate1">License Expiry Date</label>

@@ -41,4 +41,96 @@
 		<li><form method="post" action="{{ url('vehicles/delete/'.$vehix->Rego_No) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Delete" /></form></li>
 	</ul>
 	
+@if (count($reports) > 0)
+
+<div class="container">
+	<div class="panel">
+		<div class="panel-heading carshare-subheader">Damage Reports for this Vehicle</div>
+		<div class="panel-body">
+			<table class="table">
+
+				<tr class="carshare-table-hdr">
+					<th>Damage Report ID</th>
+					<th>Member</th>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Description</th>
+				</tr>
+
+				@foreach ($reports as $r)
+
+					<tr class="carshare-table-row">
+						<td>{{ $r->Damage_Id }}</td>
+						<td>{{ $r->Membership_No.' ('.$r->First_Name.' '.$r->Last_Name.')' }}</td>
+						<td>{{ substr($r->Damage_Date, 0, 10) }}</td>
+						<td>{{ substr($r->Damage_Date, 11) }}</td>
+						<td>{{ $r->Feedback }}</td>
+					</tr>
+
+				@endforeach
+
+			</table>
+		</div>
+	</div>
+</div>
+
+@else
+
+    <div class="container">
+        <div class="panel">
+            <div class="panel-body">
+                {{ $defNoReports }}
+            </div>
+        </div>
+    </div>
+
+@endif
+
+@if (count($reviews) > 0)
+
+<div class="container">
+	<div class="panel">
+		<div class="panel-heading carshare-subheader">Reviews for this Vehicle</div>
+		<div class="panel-body">
+			<table class="table">
+
+				<tr class="carshare-table-hdr">
+					<th>Review ID</th>
+					<th>Member</th>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Rating</th>
+					<th>Review</th>
+				</tr>
+
+				@foreach ($reviews as $r)
+
+					<tr class="carshare-table-row">
+						<td>{{ $r->Review_Id }}</td>
+						<td>{{ $r->Membership_No.' ('.$r->First_Name.' '.$r->Last_Name.')' }}</td>
+						<td>{{ substr($r->Review_Date, 0, 10) }}</td>
+						<td>{{ substr($r->Review_Date, 11) }}</td>
+						<td>{{ $r->Rating }}</td>
+						<td>{{ $r->Feedback }}</td>
+					</tr>
+
+				@endforeach
+
+			</table>
+		</div>
+	</div>
+</div>
+
+@else
+
+    <div class="container">
+        <div class="panel">
+            <div class="panel-body">
+                {{ $defNoReviews }}
+            </div>
+        </div>
+    </div>
+
+@endif
+
 @endsection

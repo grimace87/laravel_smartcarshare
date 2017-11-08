@@ -31,39 +31,39 @@
 						
 						<div class="form-group">
                             <label for="txtCouncil">Council</label>
-                            <input type="text" class="form-control" id="txtCouncil" name="Council_Name" value="{{ old('Council_Name') }}" />
+                            <input type="text" class="form-control" id="txtCouncil" name="Council_Name" value="{{ old('Council_Name') }}" placeholder="Type the Council name, or click the map" />
                         </div>
 						
 						<div class="form-group">
                             <label for="txtContact">Contact Name</label>
-                            <input type="text" class="form-control" id="txtContact" name="Contact_Name" value="{{ old('Contact_Name') }}" />
+                            <input type="text" class="form-control" id="txtContact" name="Contact_Name" value="{{ old('Contact_Name') }}" placeholder="Enter the Council contact's name" />
                         </div>
 						<div class="form-group">
                             <label for="txtPhone">Phone No.</label>
-                            <input type="text" class="form-control" id="txtPhone" name="Phone_No" value="{{ old('Phone_No') }}" />
+                            <input type="text" class="form-control" id="txtPhone" name="Phone_No" value="{{ old('Phone_No') }}" placeholder="Enter the Council's contact number" />
                         </div>
 						<div class="form-group">
                             <label for="txtEmail">Email Address</label>
-                            <input type="text" class="form-control" id="txtEmail" name="Email_Add" value="{{ old('Email_Add') }}" />
+                            <input type="text" class="form-control" id="txtEmail" name="Email_Add" value="{{ old('Email_Add') }}" placeholder="Enter the Council contact's email address" />
                         </div>
 						<div class="form-group">
                             <label for="txtAddress">Street Address</label>
-                            <input type="text" class="form-control" id="txtAddress" name="Street_Address" value="{{ old('Street_Address') }}"
+                            <input type="text" class="form-control" id="txtAddress" name="Street_Address" value="{{ old('Street_Address') }}" placeholder="Type the house number and street, or click the map"
 								oninput="javascript:refreshMarker();" />
                         </div>
 						<div class="form-group">
                             <label for="txtSuburb">Suburb</label>
-                            <input type="text" class="form-control" id="txtSuburb" name="Suburb" value="{{ old('Suburb') }}"
+                            <input type="text" class="form-control" id="txtSuburb" name="Suburb" value="{{ old('Suburb') }}" placeholder="Type the suburb, or click the map"
 								oninput="javascript:refreshMarker();" />
                         </div>
 						<div class="form-group">
                             <label for="txtPostCode">Post Code</label>
-                            <input type="text" class="form-control" id="txtPostCode" name="Postcode" value="{{ old('Postcode') }}"
+                            <input type="text" class="form-control" id="txtPostCode" name="Postcode" value="{{ old('Postcode') }}" placeholder="Type the post code, or click the map"
 								oninput="javascript:refreshMarker();" />
                         </div>
 						<div class="form-group">
                             <label for="txtLevy">Parking Levy</label>
-                            <input type="text" class="form-control" id="txtLevy" name="Parking_Levy_Amt" value="{{ old('Parking_Levy_Amt') }}" />
+                            <input type="text" readonly class="form-control" id="txtLevy" name="Parking_Levy_Amt" value="15.0" />
                         </div>
 						<div class="form-group">
                             <label for="txtLatitude">Latitude</label>

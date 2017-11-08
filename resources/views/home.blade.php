@@ -95,5 +95,19 @@
         </div>
     </div>
 
+    <!-- Help -->
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading carshare-subheader">Help</div>
+                <div class="panel-body">
+                    <ul class="carshare-indent-list">
+                        <li><a href="{{ url('/help') }}">View Help Information</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 @endsection

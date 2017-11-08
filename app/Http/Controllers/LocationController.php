@@ -13,24 +13,26 @@ class LocationController extends Controller
 	private $valRules = [
 		'Council_Name' => 'required',
 		'Contact_Name' => 'required',
-		'Phone_No' => 'required|numeric',
+		'Phone_No' => 'required|digits_between:8,12',
 		'Email_Add' => 'required|email',
 		'Street_Address' => 'required',
 		'Suburb' => 'required',
-		'Postcode' => 'required|numeric',
+		'Postcode' => 'required|integer|min:1000|max:9999',
 		'Parking_Levy_Amt' => 'required|numeric'
 	];
 	private $valMessages = [
 		'Council_Name.required' => 'Please enter the council name.',
 		'Contact_Name.required' => 'Please enter the name of the council contact.',
 		'Phone_No.required' => 'Please enter the phone number of the council contact.',
-		'Phone_No.numeric' => 'The contact phone number must be a number.',
+		'Phone_No.digits_between' => 'The contact phone number must be from 8 to 12 digits long.',
 		'Email_Add.required' => 'Please enter the email address of the council contact.',
 		'Email_Add.email' => 'The email address of the council contact must be a valid email address.',
 		'Street_Address.required' => 'Please enter the street address.',
 		'Suburb.required' => 'Please enter the suburb.',
 		'Postcode.required' => 'Please enter the postcode.',
-		'Postcode.numeric' => 'The postcode must be a number.',
+		'Postcode.integer' => 'The postcode must be a 4-digit number.',
+		'Postcode.min' => 'The postcode must be a 4-digit number of at least 1000.',
+		'Postcode.max' => 'The postcode must be a 4-digit number.',
 		'Parking_Levy_Amt.required' => 'Please enter the parking levy amount.',
 		'Parking_Levy_Amt.numeric' => 'The parking levy amount must be a number.'
 	];
@@ -78,8 +80,17 @@ class LocationController extends Controller
 	// Show one location with all details
 	public function show($id) {
         
+		// Get this
         $loc = Location::find($id);
-        return view('location.show', ['loc' => $loc]);
+		
+		// Get other things that might be nice
+		$vehicles = DB::table('vehicles')
+			->join('vehicle_types','vehicles.Type_Id','=','vehicle_types.Type_Id')
+			->where('Location_Id',$id)
+			->get();
+		
+		// Pass stuff to the view
+        return view('location.show', ['loc' => $loc, 'vehix' => $vehicles, 'defNoVehicles' => 'There are no vehicles at this location.']);
 
     }
 	

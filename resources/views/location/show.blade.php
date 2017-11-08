@@ -53,4 +53,49 @@
 		<li><form method="post" action="{{ url('locations/delete/'.$loc['Location_Id']) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Delete" /></form></li>
 	</ul>
 	
+@if (count($vehix) > 0)
+	
+<div class="container">
+	<div class="panel">
+		<div class="panel-heading carshare-subheader">Vehicles at this Location</div>
+		<div class="panel-body">
+			<table class="table">
+
+				<tr class="carshare-table-hdr">
+					<th>Registration No.</th>
+					<th>Model</th>
+					<th>Colour</th>
+					<th>Odometer Reading</th>
+					<th></th>
+				</tr>
+
+				@foreach ($vehix as $v)
+
+					<tr class="carshare-table-row">
+						<td>{{ $v->Rego_No }}</td>
+						<td>{{ $v->Make.' '.$v->Model }}</td>
+						<td>{{ $v->Colour }}</td>
+						<td>{{ $v->Odo_Reading }}</td>
+						<td><form method="get" action="{{ url('vehicles/show/'.$v->Rego_No) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Details" /></form></td>
+					</tr>
+
+				@endforeach
+
+			</table>
+		</div>
+	</div>
+</div>
+	
+@else
+
+    <div class="container">
+        <div class="panel">
+            <div class="panel-body">
+                {{ $defNoVehicles }}
+            </div>
+        </div>
+    </div>
+
+@endif
+
 @endsection

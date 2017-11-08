@@ -6,6 +6,7 @@ use App\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\MessageBag;
 
 class StaffController extends Controller
 {
@@ -15,11 +16,11 @@ class StaffController extends Controller
 		'First_Name' => 'required|min:2',
 		'Street_Address' => 'required',
 		'Suburb' => 'required',
-		'Postcode' => 'required|numeric',
-		'Phone_No' => 'nullable|numeric',
+		'Postcode' => 'required|integer|min:1000|max:9999',
+		'Phone_No' => 'nullable|digits_between:8,12',
 		'Email_Add' => 'required|email',
 		'Position' => 'required',
-		'Date_Birth' => 'required',
+		'Date_Birth' => 'required|date|before:now',
 		'username' => 'required|min:4'
 	];
 	private $valMessages = [
@@ -30,12 +31,16 @@ class StaffController extends Controller
 		'Street_Address.required' => 'Please enter a street address.',
 		'Suburb.required' => 'Please enter a suburb.',
 		'Postcode.required' => 'Please enter a postcode.',
-		'Postcode.numeric' => 'The postcode must be numeric.',
-		'Phone_No.numeric' => 'The phone number must be numeric, or left blank.',
+		'Postcode.integer' => 'The postcode must be 4-digit number.',
+		'Postcode.min' => 'The postcode must be 4-digit number of at least 1000.',
+		'Postcode.max' => 'The postcode must be 4-digit number.',
+		'Phone_No.digits_between' => 'The contact phone number must be from 8 to 12 digits long, or left blank.',
 		'Email_Add.required' => 'Please enter an email address.',
 		'Email_Add.email' => 'The email address does not appear valid.',
 		'Position.required' => 'Please select a position.',
 		'Date_Birth.required' => 'Please enter a date of birth.',
+		'Date_Birth.date' => 'Please enter a valid date of birth.',
+		'Date_Birth.before' => 'Date of birth must precede the current date.',
 		'username.required' => 'Please enter a user name.',
 		'username.min' => 'The user name must be at least 4 characters.'
 	];
@@ -116,7 +121,17 @@ class StaffController extends Controller
 
         // Find the Model
         $staff = Staff::find($request->Staff_No);
-
+		
+		// Verify unique-ness of the new username if it's been changed
+		if ($request->username != $staff->username) {
+			// Check for this in the database
+			if (DB::table('staff')->where('username',$request->username)->get()->count() > 0)
+				// Send an error message back in the same way that a validation failure would
+				return redirect()->back()
+					->withInput($request->input())
+					->with('errors', new MessageBag(['err' => 'That username is already being used.']));
+		}
+		
         // Check nullable 'Phone_No' fields
         $phoneNo = $request->Phone_No;
         if ($phoneNo == '') $phoneNo = null;

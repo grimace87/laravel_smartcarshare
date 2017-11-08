@@ -7,6 +7,7 @@ use App\MemberMembership;
 use App\MembershipType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\MessageBag;
 
 class MemberController extends Controller
 {
@@ -17,13 +18,13 @@ class MemberController extends Controller
         'First_Name' => 'required|min:2',
         'Street_Address' => 'required|min:6',
         'Suburb' => 'required|min:3',
-        'Postcode' => 'required|numeric',
-        'Phone_No' => 'nullable|numeric',
+        'Postcode' => 'required|integer|min:1000|max:9999',
+        'Phone_No' => 'nullable|digits_between:8,12',
         'Email_Add' => 'required|email',
-        'Licence_No' => 'required|numeric',
+        'Licence_No' => 'required|integer',
         'Licence_Exp' => 'required',
         'Terms_File_Loc' => 'required',
-        'Acceptance_Date' => 'required',
+        'Acceptance_Date' => 'required|date|before_or_equal:now',
 
         'MemType_Id' => 'required',
         'Status' => 'required',
@@ -41,15 +42,19 @@ class MemberController extends Controller
         'Suburb.required' => 'Please enter the suburb.',
         'Suburb.min' => 'Please enter at least 3 characters for the suburb.',
         'Postcode.required' => 'Please enter the post code.',
-        'Postcode.numeric' => 'Please enter only numbers for the post code.',
-        'Phone_No.numeric' => 'Please enter only numbers for the phone number.',
+        'Postcode.integer' => 'The post code must be a 4-digit number.',
+        'Postcode.min' => 'The post code must be a 4-digit number of at least 1000.',
+        'Postcode.max' => 'The post code must be a 4-digit number.',
+        'Phone_No.digits_between' => 'The contact phone number must be from 8 to 12 digits long, or left blank.',
         'Email_Add.required' => 'Please enter an email address.',
         'Email_Add.email' => 'Please enter a valid email address.',
         'Licence_No.required' => 'Please enter the license number.',
-        'Licence_No.numeric' => 'Please enter only numbers for the license number.',
+        'Licence_No.integer' => 'Please enter only numbers for the license number.',
         'Licence_Exp.required' => 'Please enter the license expiry date.',
         'Terms_File_Loc.required' => 'Please enter file location of the terms agreement.',
         'Acceptance_Date.required' => 'Please enter the date of acceptance of the terms.',
+        'Acceptance_Date.date' => 'Please enter a valid date of acceptance.',
+        'Acceptance_Date.before_or_equal' => 'The date of acceptance must be no later than the current date.',
 
         'MemType_Id.required' => 'Please enter a valid membership type.',
         'Status.required' => 'Please enter the membership status.',
@@ -202,12 +207,24 @@ class MemberController extends Controller
 
         // Validate data
         $this->validate($request, $this->valRules, $this->valMessages);
-
+		
+		// Get the Member instance
+        $mem = Member::find($request->Membership_No);
+		
+		// Verify unique-ness of the new license number if it's been changed
+		if ($request->Licence_No != $mem->Licence_No) {
+			// Check for this in the database
+			if (DB::table('members')->where('Licence_No',$request->Licence_No)->get()->count() > 0)
+				// Send an error message back in the same way that a validation failure would
+				return redirect()->back()
+					->withInput($request->input())
+					->with('errors', new MessageBag(['err' => 'That license number is already being used.']));
+		}
+		
         // Check nullable fields
         if ($request->Phone_No == '') $request->Phone_No = null;
 
 		// Member and membership records need to be saved here - the member one works fine
-        $mem = Member::find($request->Membership_No);
         $mem->Last_Name = $request->Last_Name;
         $mem->First_Name = $request->First_Name;
         $mem->Street_Address = $request->Street_Address;

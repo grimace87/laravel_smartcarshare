@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\MessageBag;
 
 class VehicleController extends Controller
 {
@@ -16,8 +17,8 @@ class VehicleController extends Controller
 	private $valRules = [
 		'Rego_No' => 'required|min:3|max:8',
 		'VIN_No' => 'required|min:17|max:17',
-		'Odo_Reading' => 'required|numeric',
-		'Year' => 'required|numeric|min:1920|max:2050'
+		'Odo_Reading' => 'required|integer',
+		'Year' => 'required|integer|min:1920|max:2050'
 	];
 	private $valMessages = [
 		'Rego_No.required' => 'Please enter the registration number.',
@@ -27,9 +28,9 @@ class VehicleController extends Controller
 		'VIN_No.min' => 'VIN number must be exactly 17 characters long.',
 		'VIN_No.max' => 'VIN number must be exactly 17 characters long.',
 		'Odo_Reading.required' => 'Please enter the current odometer reading.',
-		'Odo_Reading.numeric' => 'The odometer reading must be a number.',
+		'Odo_Reading.integer' => 'The odometer reading must be a whole number.',
 		'Year.required' => "Please enter the vehicle's year of manufacture.",
-		'Year.numeric' => 'The year of manufacture must be a number.',
+		'Year.integer' => 'The year of manufacture must be a whole number.',
 		'Year.min' => 'The year of manufacture may not be prior to 1920.',
 		'Year.max' => 'The year of manufacture may not, at this stage, be later than 2050.'
 	];
@@ -45,7 +46,10 @@ class VehicleController extends Controller
     // Get all bookings
     public function all() {
 		
-        $vehix = DB::table('vehicles')->join('locations', 'vehicles.Location_Id', '=', 'locations.Location_Id')->get();
+        $vehix = DB::table('vehicles')
+			->join('locations', 'vehicles.Location_Id', '=', 'locations.Location_Id')
+			->join('vehicle_types', 'vehicles.Type_Id', '=', 'vehicle_types.Type_Id')
+			->get();
         return view('vehicle.all', ['vehix' => $vehix, 'def' => 'No vehicles to display.']);
 		
     }
@@ -77,12 +81,25 @@ class VehicleController extends Controller
 	// Show one vehicle with all details
 	public function show($rego) {
         
+		// Get this
         $vehicle = DB::table('vehicles')
 			->join('locations', 'vehicles.Location_Id', '=', 'locations.Location_Id')
 			->join('vehicle_types', 'vehicles.Type_Id', '=', 'vehicle_types.Type_Id')
 			->where('Rego_No',$rego)
 			->first();
-        return view('vehicle.show', ['vehix' => $vehicle]);
+		
+		// Get other stuff that might be cool for this thing
+		$reports = DB::table('damage_reports')->join('members', 'damage_reports.Membership_No', '=', 'members.Membership_No')->where('Rego_No',$rego)->get();
+		$reviews = DB::table('reviews')->join('members', 'reviews.Membership_No', '=', 'members.Membership_No')->where('Rego_No',$rego)->get();
+		
+		// Make the view
+        return view('vehicle.show', [
+			'vehix' => $vehicle,
+			'reports' => $reports,
+			'reviews' => $reviews,
+			'defNoReports' => 'There are no damage reports recorded for this vehicle.',
+			'defNoReviews' => 'There are no reviews recorded for this vehicle.'
+		]);
 
     }
 	
@@ -103,6 +120,21 @@ class VehicleController extends Controller
         // Validate data
         $this->validate($request, $this->valRules, $this->valMessages);
 
+		// Verify unique-ness of the new registration number
+		// Check for it in the database
+		if (DB::table('vehicles')->where('Rego_No',$request->Rego_No)->get()->count() > 0)
+			// Send an error message back in the same way that a validation failure would
+			return redirect()->back()
+				->withInput($request->input())
+				->with('errors', new MessageBag(['err' => 'That registration number is already on record.']));
+		
+		// Do the same for the VIN number
+		if (DB::table('vehicles')->where('VIN_No',$request->VIN_No)->get()->count() > 0)
+			// Send an error message back in the same way that a validation failure would
+			return redirect()->back()
+				->withInput($request->input())
+				->with('errors', new MessageBag(['err' => 'That VIN is already on record.']));
+		
         // Add the data to a new Model
         $vehicle = new Vehicle();
         $vehicle->Rego_No = $request->Rego_No;
@@ -147,6 +179,16 @@ class VehicleController extends Controller
         // Find the Model
         $vehicle = Vehicle::find($request->Old_Rego_No);
 
+		// Verify unique-ness of the VIN if it's been changed
+		if ($request->VIN_No != $vehicle->VIN_No) {
+			// Check for this in the database
+			if (DB::table('vehicles')->where('VIN_No',$request->VIN_No)->get()->count() > 0)
+				// Send an error message back in the same way that a validation failure would
+				return redirect()->back()
+					->withInput($request->input())
+					->with('errors', new MessageBag(['err' => 'That VIN is already being used.']));
+		}
+		
         // If the rego number hasn't changed, simply save with the other details updated
 		if ($request->Old_Rego_No == $request->Rego_No) {
 			$vehicle->Type_Id = $request->Type_Id;
@@ -161,6 +203,16 @@ class VehicleController extends Controller
 		
 		// If it has changed, save a new one and delete the old one if successful
 		else {
+			// But first, verify that it's unique
+			if ($request->Rego_No != $vehicle->Rego_No) {
+				// Check for this in the database
+				if (DB::table('vehicles')->where('Rego_No',$request->Rego_No)->get()->count() > 0)
+					// Send an error message back in the same way that a validation failure would
+					return redirect()->back()
+						->withInput($request->input())
+						->with('errors', new MessageBag(['err' => 'That registration number is already being used.']));
+			}
+			// All clear, do the change
 			$newVehicle = new Vehicle();
 			$newVehicle->Rego_No = $request->Rego_No;
 			$newVehicle->Type_Id = $request->Type_Id;

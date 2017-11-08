@@ -120,19 +120,19 @@
                         </div>
                         <div class="form-group">
                             <label for="txtFuelFee">Fuel Fee</label>
-                            <input type="text" class="form-control" id="txtFuelFee" name="Fuel_Fee" value="{{ $book->Fuel_Fee }}" />
+                            <input type="text" readonly class="form-control" id="txtFuelFee" name="Fuel_Fee" value="20.00" />
                         </div>
                         <div class="form-group">
                             <label for="txtInsuranceFee">Insurance Fee</label>
-                            <input type="text" class="form-control" id="txtInsuranceFee" name="Insurance_Fee" value="{{ $book->Insurance_Fee }}" />
+                            <input type="text" readonly class="form-control" id="txtInsuranceFee" name="Insurance_Fee" value="40.00" />
                         </div>
                         <div class="form-group">
                             <label for="txtTotal">Total (GST excl.)</label>
-                            <input type="text" class="form-control" id="txtTotal" name="Total_exGST" value="{{ $book->Total_exGST }}" />
+                            <input type="text" readonly class="form-control" id="txtTotal" name="Total_exGST" value="200.00" />
                         </div>
                         <div class="form-group">
                             <label for="txtPercGST">GST%</label>
-                            <input type="text" class="form-control" id="txtPercGST" name="GST_Amount" value="{{ $book->GST_Amount }}" />
+                            <input type="text" readonly class="form-control" id="txtPercGST" name="GST_Amount" value="10" />
                         </div>
                         <div class="form-group">
                             <label for="txtNotes">Notes</label>
