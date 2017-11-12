@@ -91,12 +91,15 @@ class VehicleController extends Controller
 		// Get other stuff that might be cool for this thing
 		$reports = DB::table('damage_reports')->join('members', 'damage_reports.Membership_No', '=', 'members.Membership_No')->where('Rego_No',$rego)->get();
 		$reviews = DB::table('reviews')->join('members', 'reviews.Membership_No', '=', 'members.Membership_No')->where('Rego_No',$rego)->get();
+		$books = DB::table('bookings')->join('vehicles', 'bookings.Rego_No', '=', 'vehicles.Rego_No')->join('vehicle_types', 'vehicles.Type_Id', '=', 'vehicle_types.Type_Id')
+			->join('members', 'bookings.Membership_No', '=', 'members.Membership_No')->where('bookings.Rego_No',$rego)->whereNull('Actual_Return_Date')->get();
 		
 		// Make the view
         return view('vehicle.show', [
 			'vehix' => $vehicle,
 			'reports' => $reports,
 			'reviews' => $reviews,
+			'books' => $books,
 			'defNoReports' => 'There are no damage reports recorded for this vehicle.',
 			'defNoReviews' => 'There are no reviews recorded for this vehicle.'
 		]);

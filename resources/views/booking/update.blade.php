@@ -172,8 +172,8 @@
 
     <script>
         var min = moment();
-        var start = '{{ $book->Start_Date }}';
-        var finish = '{{ $book->Return_Date }}';
+        var start = '{{ $book->Start_Date.' '.$book->Start_Time }}';
+        var finish = '{{ $book->Return_Date.' '.$book->Return_Time }}';
         $("#dtPicky1").datetimepicker({format: "YYYY-MM-DD", useCurrent: false, defaultDate: start});
         $("#dtPicky2").datetimepicker({format: "HH:mm", useCurrent: false, defaultDate: start});
         $("#dtPicky3").datetimepicker({format: "YYYY-MM-DD", useCurrent: false, defaultDate: finish});

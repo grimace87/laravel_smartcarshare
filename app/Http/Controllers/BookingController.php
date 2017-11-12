@@ -16,9 +16,9 @@ class BookingController extends Controller
 {
 	// Validation rules, used for the 'new' and 'update' use cases
 	private $valRules = [
-		'Start_Date' => 'required|date|after_or_equal:now',
+		'Start_Date' => 'required|date',
 		'Start_Time' => 'required',
-		'Return_Date' => 'required|date|after_or_equal:now',
+		'Return_Date' => 'required|date',
 		'Return_Time' => 'required',
 		'Fuel_Fee' => 'required|numeric',
 		'Insurance_Fee' => 'required|numeric',
@@ -29,11 +29,9 @@ class BookingController extends Controller
 	private $valMessages = [
 		'Start_Date.required' => 'Please enter the start date.',
 		'Start_Date.date' => 'Please enter a valid start date.',
-		'Start_Date.after_or_equal' => 'The start date must be in the future.',
 		'Start_Time.required' => 'Please enter the start time.',
 		'Return_Date.required' => 'Please enter the return date.',
 		'Return_Date.date' => 'Please enter a valid return date.',
-		'Return_Date.after_or_equal' => 'The return date must be in the future.',
 		'Return_Time.required' => 'Please enter the return time.',
 		'Fuel_Fee.required' => 'Please enter the fuel fee.',
 		'Fuel_Fee.numeric' => 'The fuel fee must be numeric.',
@@ -55,7 +53,7 @@ class BookingController extends Controller
     // Get all bookings from database
     public function all() {
 
-        $books = Booking::all();
+        $books = DB::table('bookings')->join('members', 'bookings.Membership_No', '=', 'members.Membership_No')->get();
         return view('booking.all', ['books' => $books, 'def' => 'No bookings to display.']);
 
     }
@@ -117,11 +115,18 @@ class BookingController extends Controller
 		// Verify that the start date precedes the finish date
 		$dateStart = strtotime($request->Start_Date.' '.$request->Start_Time.':00');
 		$dateFinish = strtotime($request->Return_Date.' '.$request->Return_Time.':00');
-		if ($dateFinish < $dateStart) {
+		$currentTime = strtotime(Carbon::now());
+		if ($dateFinish <= $dateStart) {
 			// Send an error message back in the same way that a validation failure would
 			return redirect()->back()
 				->withInput($request->input())
 				->with('errors', new MessageBag(['err' => 'The start time must precede the finish time.']));
+		}
+		if ($dateStart <= $currentTime) {
+			// Send an error message back in the same way that a validation failure would
+			return redirect()->back()
+				->withInput($request->input())
+				->with('errors', new MessageBag(['err' => 'The booking must start in the future.']));
 		}
 		
         // Add the data to a new Model
@@ -172,8 +177,7 @@ class BookingController extends Controller
 		// Verify that the start date precedes the finish date
 		$dateStart = strtotime($request->Start_Date.' '.$request->Start_Time.':00');
 		$dateFinish = strtotime($request->Return_Date.' '.$request->Return_Time.':00');
-		$dateDiff = date_diff($dateFinish, $dateStart, false);
-		if ($dateDiff->invert !== 0) {
+		if ($dateFinish <= $dateStart) {
 			// Send an error message back in the same way that a validation failure would
 			return redirect()->back()
 				->withInput($request->input())

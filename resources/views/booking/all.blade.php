@@ -24,7 +24,7 @@
             <tr class="carshare-table-row">
                 <td>{{ $b->Booking_No }}</td>
                 <td>{{ $b->Rego_No }}</td>
-                <td>{{ $b->Membership_No }}</td>
+                <td>{{ $b->Membership_No.' ('.$b->First_Name.' '.$b->Last_Name.')' }}</td>
                 <td>{{ $b->Booking_Date }}</td>
                 <td>{{ substr($b->Start_Date, 0, 10) }}</td>
                 <td>{{ substr($b->Return_Date, 0, 10) }}</td>

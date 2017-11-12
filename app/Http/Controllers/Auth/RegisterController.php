@@ -56,9 +56,9 @@ class RegisterController extends Controller
             'last' => 'required|min:2|max:50',
             'street' => 'required|max:50',
             'suburb' => 'required|max:50',
-            'postCode' => 'required|string|max:4',
-            'phone' => 'string|min:8|max:12',
-            'dob' => 'required|date',
+            'postCode' => 'required|integer|min:1000|max:9999',
+            'phone' => 'nullable|digits_between:8,12',
+            'dob' => 'required|date|before:now',
             'Email_Add' => 'required|string|email|max:255|unique:staff',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -72,6 +72,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+		if ($data['phone'] == "")
+			$data['phone'] = null;
+		
         return Staff::create([
             'username' => $data['username'],
             'First_Name' => $data['first'],

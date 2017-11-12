@@ -133,4 +133,49 @@
 
 @endif
 
+@if (count($books) > 0)
+
+<div class="container">
+	<div class="panel">
+		<div class="panel-heading carshare-subheader">Uncompleted Bookings for this Vehicle</div>
+		<div class="panel-body">
+			<table class="table">
+
+				<tr class="carshare-table-hdr">
+					<th>Booking No.</th>
+					<th>Booking Date</th>
+					<th>Member</th>
+					<th>Start Time</th>
+					<th>Due Return Time</th>
+				</tr>
+
+				@foreach ($books as $b)
+
+					<tr class="carshare-table-row">
+						<td>{{ $b->Booking_No }}</td>
+						<td>{{ $b->Booking_Date }}</td>
+						<td>{{ $b->Membership_No.' ('.$b->First_Name.' '.$b->Last_Name.')' }}</td>
+						<td>{{ $b->Start_Date }}</td>
+						<td>{{ $b->Return_Date }}</td>
+					</tr>
+
+				@endforeach
+
+			</table>
+		</div>
+	</div>
+</div>
+
+@else
+
+    <div class="container">
+        <div class="panel">
+            <div class="panel-body">
+                {{ $defNoReviews }}
+            </div>
+        </div>
+    </div>
+
+@endif
+
 @endsection
