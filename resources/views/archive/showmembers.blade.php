@@ -32,11 +32,13 @@
 	
 @else
 
-    <div class="container">
-        <div class="panel">
-            <div class="panel-body">
-                {{ $def }}
-            </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+				<div class="panel-body">
+					{{ $def }}
+				</div>
+			</div>
         </div>
     </div>
 
@@ -44,9 +46,9 @@
 
 @isset($errs)
 
-	<div class="container">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
+	<div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
 				<div class="panel-heading carshare-subheader-bad">Some archive operations failed</div>
 				<div class="panel-body carshare-bad">
 					<p>{{ $errs }} members could not be archived, since they have un-archived bookings</p>

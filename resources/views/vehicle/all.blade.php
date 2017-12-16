@@ -4,44 +4,55 @@
 
 @if (count($vehix) > 0)
 
-    <table class="table">
+	<div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body" style="padding: 0px;">
 
-        <tr class="carshare-table-hdr">
-            <th>Registration Number &nbsp; &nbsp; <a href="{{ url('vehicles/filter/1') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('vehicles/filter/2') }}">ᐯ</a></th>
-			<th>Model</th>
-            <th>Odometer (km) &nbsp; &nbsp; <a href="{{ url('vehicles/filter/3') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('vehicles/filter/4') }}">ᐯ</a></th>
-            <th>Location</th>
-            <th>Date of Disposal</th>
-            <th></th>
-        </tr>
+					<table class="table">
 
-        @foreach ($vehix as $v)
+						<tr class="carshare-table-hdr">
+							<th>Registration Number <br> <a href="{{ url('vehicles/filter/1') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('vehicles/filter/2') }}">ᐯ</a></th>
+							<th>Model</th>
+							<th>Odometer (km) <br> <a href="{{ url('vehicles/filter/3') }}">ᐱ</a> &nbsp; &nbsp; <a href="{{ url('vehicles/filter/4') }}">ᐯ</a></th>
+							<th>Location</th>
+							<th>Date of Disposal</th>
+							<th></th>
+						</tr>
 
-            <tr class="carshare-table-row">
-                <td>{{ $v->Rego_No }}</td>
-				<td>{{ $v->Make.' '.$v->Model }}</td>
-                <td>{{ $v->Odo_Reading }}</td>
-                <td>{{ $v->Street_Address.', '.$v->Suburb }}</td>
-                <td>{{ substr($v->Date_Disposed, 0, 10) }}</td>
-                <td><form method="get" action="{{ url('vehicles/show/'.$v->Rego_No) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Details" /></form></td>
-            </tr>
+						@foreach ($vehix as $v)
 
-        @endforeach
+							<tr class="carshare-table-row">
+								<td>{{ $v->Rego_No }}</td>
+								<td>{{ $v->Make.' '.$v->Model }}</td>
+								<td>{{ $v->Odo_Reading }}</td>
+								<td>{{ $v->Street_Address.', '.$v->Suburb }}</td>
+								<td>{{ substr($v->Date_Disposed, 0, 10) }}</td>
+								<td><form method="get" action="{{ url('vehicles/show/'.$v->Rego_No) }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="Details" /></form></td>
+							</tr>
 
-    </table>
+						@endforeach
 
+					</table>
+				</div>
+				<div class="panel-footer">
+	
 @else
 
-    <div class="container">
-        <div class="panel">
-            <div class="panel-body">
-                {{ $def }}
-            </div>
-        </div>
-    </div>
-
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body" style="padding: 0px;">
+					{{ $def }}
+				</div>
+				<div class="panel-footer">
+				
 @endif
 
-	<form method="get" action="{{ url('vehicles/new') }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="New Vehicle" /></form>
+					<form method="get" action="{{ url('vehicles/new') }}">{{ csrf_field() }}<input type="submit" class="carshare-btn" value="New Vehicle" /></form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 @endsection

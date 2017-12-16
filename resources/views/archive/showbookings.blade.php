@@ -50,10 +50,12 @@
 
 @else
 
-    <div class="container">
-        <div class="panel">
-            <div class="panel-body">
-                {{ $def }}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+				<div class="panel-body">
+					{{ $def }}
+				</div>
             </div>
         </div>
     </div>
@@ -62,9 +64,9 @@
 	
 @isset($errs)
 
-	<div class="container">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
+	<div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
 				<div class="panel-heading carshare-subheader-bad">Payments were mis-allocated</div>
 				<div class="panel-body carshare-bad">
 					<p>{{ $errs }} bookings used payments that were attached to other bookings as well.</p>

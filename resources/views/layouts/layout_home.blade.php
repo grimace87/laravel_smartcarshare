@@ -75,7 +75,8 @@
                                 </ul>
                             </li>
                             @if (Auth::user()->Position == 'Admin' || Auth::user()->Position == 'Senior Admin' || Auth::user()->Position == 'Manager')
-                                <li><a href="{{ route('register') }}">Register</a></li>
+                                <li><a>|</a></li>
+								<li><a href="{{ route('register') }}">Register Staff</a></li>
                             @endif
                         @endif
                     </ul>

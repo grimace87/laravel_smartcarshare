@@ -6,7 +6,7 @@
 	<div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading carshare-subheader">Go To Section</div>
+                <div class="panel-heading carshare-subheader">Go To Help Section</div>
                 <div class="panel-body">
                     <ul class="carshare-indent-list">
                         <li><a href="#helpMembers">Members</a></li>
